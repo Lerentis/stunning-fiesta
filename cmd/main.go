@@ -33,7 +33,8 @@ func main() {
 
 			if operation == "helm" {
 				fmt.Println("Performing helm operation...")
-				helm.ParseAppJson(path)
+				app := helm.ParseAppJson(path)
+				helm.RenderTemplates(app)
 			}
 		},
 	}

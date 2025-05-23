@@ -1,0 +1,15 @@
+deployment:
+    enabled: true
+    name: {{ .Release.Name }}-{{ .Chart.Name }}
+    replicas: 1
+    image:
+        repository: {{ .Values.image.repository | quote }}
+        pullPolicy: {{ .Values.image.pullPolicy | quote }}
+    service:
+        enabled: true
+        type: ClusterIP
+        port: 80
+        annotations: {}
+    ingress:
+        enabled: false
+        pathType: Prefix
