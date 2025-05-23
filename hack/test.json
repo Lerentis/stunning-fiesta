@@ -1,0 +1,10 @@
+{
+  "applicationName": "my-app",
+  "registry": "docker.io/myorg",
+  "project": "my-project",
+  "ingressEnabled": "true",
+  "databaseEnabled": "false",
+  "cluster": "dev-cluster",
+  "serviceNowOffering": "offer1",
+  "projectSSH": "git@github.com:myorg/my-project.git"
+}
