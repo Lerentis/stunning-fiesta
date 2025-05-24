@@ -6,7 +6,6 @@ import (
 	"log"
 	"os"
 
-	"github.com/lerentis/stunning-fiesta/internal/templates"
 	"github.com/lerentis/stunning-fiesta/utils"
 )
 
@@ -25,11 +24,11 @@ func ParseAppJson(jsonPath string) utils.App {
 }
 
 func GetTemplate(name string) (string, error) {
-	data, err := templates.FS.ReadFile(name)
-	if err != nil {
-		return "", err
-	}
-	return string(data), nil
+	//data, err := templates.FS.ReadFile(name)
+	//if err != nil {
+	//	return "", err
+	//}
+	return "", nil
 }
 
 func RenderTemplates(app utils.App) {

@@ -1,0 +1,11 @@
+endpoints:
+  template: "https://lerentis.github.io/stunning-fiesta/templates.json"
+  update: "https://lerentis.github.io/stunning-fiesta/version.json"
+  cluster_info: "https://lerentis.github.io/stunning-fiesta/clusters.json"
+  applications: "https://lerentis.github.io/stunning-fiesta/applications.json"
+  dbms: "https://lerentis.github.io/stunning-fiesta/dbms.json"
+  projects: "https://lerentis.github.io/stunning-fiesta/projects.json"
+  vault: "https://lerentis.github.io/stunning-fiesta/vault.json"
+  teams: "https://lerentis.github.io/stunning-fiesta/teams.json"
+  application_types: "https://lerentis.github.io/stunning-fiesta/application_types.json"
+gitlab_url: "https://gitlab.com/lerentis/stunning-fiesta"
