@@ -6,7 +6,7 @@ import (
 
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/lerentis/stunning-fiesta/internal/config"
-	"github.com/lerentis/stunning-fiesta/internal/helm"
+	"github.com/lerentis/stunning-fiesta/internal/k8s"
 	"github.com/lerentis/stunning-fiesta/utils"
 	"github.com/spf13/cobra"
 )
@@ -51,8 +51,8 @@ func main() {
 
 			if operation == "helm" {
 				fmt.Println("Performing helm operation...")
-				app := helm.ParseAppJson(path)
-				helm.RenderTemplates(app)
+				app := utils.ParseAppJson(path)
+				k8s.RenderTemplates(app)
 			}
 		},
 	}

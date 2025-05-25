@@ -19,8 +19,9 @@ type Endpoints struct {
 }
 
 type Config struct {
-	Endpoints Endpoints `yaml:"endpoints"`
-	GitlabURL string    `yaml:"gitlab_url"`
+	Endpoints      Endpoints `yaml:"endpoints"`
+	GitlabURL      string    `yaml:"gitlab_url"`
+	NamespacesRepo string    `yaml:"namespaces_repo"`
 }
 
 func LoadConfig(configPath string) (*Config, error) {
@@ -53,7 +54,8 @@ func EnsureConfig(configPath string) error {
 				Teams:            "https://lerentis.github.io/stunning-fiesta/teams.json",
 				ApplicationTypes: "https://lerentis.github.io/stunning-fiesta/applicationTypes.json",
 			},
-			GitlabURL: "https://gitlab.com/lerentis/stunning-fiesta",
+			GitlabURL:      "https://gitlab.com/lerentis/stunning-fiesta",
+			NamespacesRepo: "devops/namespaces",
 		}
 		data, err := yaml.Marshal(&defaultCfg)
 		if err != nil {
