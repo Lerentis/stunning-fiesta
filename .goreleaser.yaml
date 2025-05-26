@@ -4,6 +4,7 @@ version: 2
 before:
   hooks:
     - go mod tidy
+    - go test ./...
 gitea_urls:
   api: https://git.uploadfilter24.eu/api/v1/
   download: https://git.uploadfilter24.eu
