@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/lerentis/stunning-fiesta/internal/config"
+	"github.com/lerentis/stunning-fiesta/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -22,17 +23,17 @@ var (
 	}
 )
 
-func Execute() {
-	_, err := config.LoadConfig(defaultConfig)
+func Execute(v string) {
+	config, err := config.LoadConfig(defaultConfig)
 	if err != nil {
 		fmt.Printf("Error loading config: %v\n", err)
 		os.Exit(1)
 	}
 	// Check for updates
-	/*if !utils.UpdateCheck(config.Endpoints.Update, rootCmd.Version) {
+	if !utils.UpdateCheck(config.Endpoints.Update, v) {
 		fmt.Println("You are not using the latest version of Stunning Fiesta. Please update to the latest version.")
 		os.Exit(1)
-	}*/
+	}
 	fmt.Println("Welcome to Stunning Fiesta CLI!")
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
