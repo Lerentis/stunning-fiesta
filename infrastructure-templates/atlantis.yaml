@@ -1,0 +1,6 @@
+version: 3
+projects:
+  - dir: nonprod
+    workflow: nonprod
+  - dir: prod
+    workflow: prod

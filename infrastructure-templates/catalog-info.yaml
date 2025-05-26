@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: "{{ projectName }}"
+  description: "{{ projectName }} project"
+  annotations:
+    example/topic: "{{ projectTopic }}"
+    example/gitlab-group: "{{ groupRepositoryUrl }}"
+    example/infra-project: "{{ infraProjectUrl }}"
+    example/infra-project-id: "{{ beamID }}"
+spec:
+  owner: example-team

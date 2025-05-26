@@ -1,5 +1,0 @@
-package namespace
-
-func RenderTemplates() {
-
-}
