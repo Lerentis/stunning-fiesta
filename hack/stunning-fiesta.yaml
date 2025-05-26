@@ -9,3 +9,4 @@ endpoints:
   teams: "https://lerentis.github.io/stunning-fiesta/teams.json"
   application_types: "https://lerentis.github.io/stunning-fiesta/application_types.json"
 gitlab_url: "https://gitlab.com/lerentis/stunning-fiesta"
+namespaces_repo: "devops/namespaces"

@@ -1,0 +1,33 @@
+{
+    "helm-templates": [
+      "application.properties",
+      "stage-values.yaml",
+      "requirements.yaml",
+      "Chart.yaml",
+      "values.yaml",
+      "gitignore",
+      "helmignore",
+      "properties.yaml"
+    ],
+    "application-templates": [
+      "dependencies.json",
+      "properties.json",
+      ".gitlab-ci.yml",
+      "banner.txt",
+      "catalog-info.yaml",
+      "Dockerfile_java",
+      "logback-spring.xml"
+    ],
+    "infrastructure-templates": [
+        "atlantis.yaml",
+        "aws.tf",
+        "backend.tf",
+        "catalog-info.yaml",
+        "data.tf",
+        "values.yaml",
+        "variables.tf"
+    ],
+    "namespace-templates": [
+        "values.yaml"
+    ]
+  }
