@@ -1,0 +1,31 @@
+{
+  "clusters": [
+    {
+      "name": "dev-cluster",
+      "description": "Development environment cluster",
+      "stages": [
+        {
+          "name": "dev",
+          "account": "dev-account",
+          "domain": "dev.example.com"
+        },
+        {
+          "name": "test",
+          "account": "test-account",
+          "domain": "test.example.com"
+        }
+      ]
+    },
+    {
+      "name": "prod-cluster",
+      "description": "Production environment cluster",
+      "stages": [
+        {
+          "name": "prod",
+          "account": "prod-account",
+          "domain": "prod.example.com"
+        }
+      ]
+    }
+  ]
+}
