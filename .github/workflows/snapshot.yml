@@ -13,6 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set git user
+        run: |
+          git config --global user.email "ci@example.com"
+          git config --global user.name "CI Bot"
+
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
