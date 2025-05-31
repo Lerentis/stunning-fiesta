@@ -1,0 +1,6 @@
+{
+  "teams": [
+    { "name": "iot-team" },
+    { "name": "food-team" }
+  ]
+}

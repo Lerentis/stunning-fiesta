@@ -1,0 +1,26 @@
+{
+  "projects": [
+    {
+      "name": "iot-service",
+      "topic": "iot",
+      "project_ssh": "git@github.com:org/iot-service.git",
+      "project_url": "https://github.com/org/iot-service",
+      "project_path": "org/iot-service",
+      "git_kubernetes_path": "org/iot-service/k8s",
+      "dbms": "iot",
+      "clusters": ["dev-cluster", "prod-cluster"],
+      "ownerTeam": "iot-team"
+    },
+    {
+      "name": "chicken-app",
+      "topic": "food",
+      "project_ssh": "git@github.com:org/chicken-app.git",
+      "project_url": "https://github.com/org/chicken-app",
+      "project_path": "org/chicken-app",
+      "git_kubernetes_path": "org/chicken-app/k8s",
+      "dbms": "chicken",
+      "clusters": ["dev-cluster"],
+      "ownerTeam": "food-team"
+    }
+  ]
+}

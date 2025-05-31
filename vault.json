@@ -1,0 +1,35 @@
+{
+  "vaults": [
+    {
+      "account": "main",
+      "addr": "https://vault.example.com",
+      "loginPath": "auth/kubernetes/login",
+      "authRole": "main-role",
+      "clusters": [
+        {
+          "clusterName": "dev-cluster",
+          "loginPath": "auth/kubernetes-dev/login",
+          "authRole": "dev-role"
+        },
+        {
+          "clusterName": "prod-cluster",
+          "loginPath": "auth/kubernetes-prod/login",
+          "authRole": "prod-role"
+        }
+      ]
+    },
+    {
+      "account": "secondary",
+      "addr": "https://vault2.example.com",
+      "loginPath": "auth/kubernetes/login",
+      "authRole": "secondary-role",
+      "clusters": [
+        {
+          "clusterName": "dev-cluster",
+          "loginPath": "auth/kubernetes-dev/login",
+          "authRole": "secondary-dev-role"
+        }
+      ]
+    }
+  ]
+}

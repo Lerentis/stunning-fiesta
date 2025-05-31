@@ -1,0 +1,29 @@
+{
+  "dbms": [
+    {
+      "name": "iot",
+      "mountPaths": [
+        {
+          "clusterName": "dev-cluster",
+          "nonprod": "db-pgdatabase-crd-consumer",
+          "prod": "db-pgdatabase-crd-consumer"
+        },
+        {
+          "clusterName": "prod-cluster",
+          "nonprod": "db-pgdatabase-crd-consumer",
+          "prod": "db-pgdatabase-crd-consumer"
+        }
+      ]
+    },
+    {
+      "name": "chicken",
+      "mountPaths": [
+        {
+          "clusterName": "dev-cluster",
+          "nonprod": "db-pgdatabase-crd-consumer",
+          "prod": "db-pgdatabase-crd-consumer"
+        }
+      ]
+    }
+  ]
+}
