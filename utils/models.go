@@ -12,7 +12,10 @@ type App struct {
 }
 
 type TemplatesListResponse struct {
-	Templates []string `json:"templates"`
+	HelmTemplates           []string `json:"helm-templates"`
+	ApplicationTemplates    []string `json:"application-templates"`
+	InfrastructureTemplates []string `json:"infrastructure-templates"`
+	NamespaceTemplates      []string `json:"namespace-templates"`
 }
 
 type Stage struct {

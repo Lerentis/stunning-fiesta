@@ -3,6 +3,7 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"io"
 	"net/http"
 	"os"
@@ -47,22 +48,138 @@ func DownloadTemplate(url, dir string) (string, error) {
 	return outPath, nil
 }
 
-func GetTemplates(cfg config.Config) (string, error) {
+func GetNamespaceTemplates(cfg config.Config) (string, error) {
 	list, err := FetchTemplatesList(cfg.Endpoints.Template)
 	if err != nil {
 		return "", err
 	}
 
-	tempDir, err := os.MkdirTemp("", "stunning-fiesta-templates-*")
+	tempDir, err := os.MkdirTemp("", "stunning-fiesta-namespace-templates-*")
 	if err != nil {
 		return "", fmt.Errorf("failed to create temp dir: %w", err)
 	}
 
-	for _, url := range list.Templates {
+	baseURL := cfg.Endpoints.Template
+	if idx := len(baseURL) - len(filepath.Base(baseURL)); idx > 0 {
+		baseURL = baseURL[:idx]
+	}
+
+	for _, filename := range list.NamespaceTemplates {
+		url := baseURL + "namespace-templates/" + filename
 		if _, err := DownloadTemplate(url, tempDir); err != nil {
 			return "", err
 		}
 	}
 
 	return tempDir, nil
+}
+
+func GetHelmTemplates(cfg config.Config) (string, error) {
+	list, err := FetchTemplatesList(cfg.Endpoints.Template)
+	if err != nil {
+		return "", err
+	}
+
+	tempDir, err := os.MkdirTemp("", "stunning-fiesta-helm-templates-*")
+	if err != nil {
+		return "", fmt.Errorf("failed to create temp dir: %w", err)
+	}
+
+	baseURL := cfg.Endpoints.Template
+	if idx := len(baseURL) - len(filepath.Base(baseURL)); idx > 0 {
+		baseURL = baseURL[:idx]
+	}
+
+	for _, filename := range list.HelmTemplates {
+		url := baseURL + "helm-templates/" + filename
+		if _, err := DownloadTemplate(url, tempDir); err != nil {
+			return "", err
+		}
+	}
+
+	return tempDir, nil
+}
+
+func GetApplicationTemplates(cfg config.Config) (string, error) {
+	list, err := FetchTemplatesList(cfg.Endpoints.Template)
+	if err != nil {
+		return "", err
+	}
+
+	tempDir, err := os.MkdirTemp("", "stunning-fiesta-application-templates-*")
+	if err != nil {
+		return "", fmt.Errorf("failed to create temp dir: %w", err)
+	}
+
+	baseURL := cfg.Endpoints.Template
+	if idx := len(baseURL) - len(filepath.Base(baseURL)); idx > 0 {
+		baseURL = baseURL[:idx]
+	}
+
+	for _, filename := range list.ApplicationTemplates {
+		url := baseURL + "application-templates/" + filename
+		if _, err := DownloadTemplate(url, tempDir); err != nil {
+			return "", err
+		}
+	}
+
+	return tempDir, nil
+}
+
+func GetInfrastructureTemplates(cfg config.Config) (string, error) {
+	list, err := FetchTemplatesList(cfg.Endpoints.Template)
+	if err != nil {
+		return "", err
+	}
+
+	tempDir, err := os.MkdirTemp("", "stunning-fiesta-infrastructure-templates-*")
+	if err != nil {
+		return "", fmt.Errorf("failed to create temp dir: %w", err)
+	}
+
+	baseURL := cfg.Endpoints.Template
+	if idx := len(baseURL) - len(filepath.Base(baseURL)); idx > 0 {
+		baseURL = baseURL[:idx]
+	}
+
+	for _, filename := range list.InfrastructureTemplates {
+		url := baseURL + "infrastructure-templates/" + filename
+		if _, err := DownloadTemplate(url, tempDir); err != nil {
+			return "", err
+		}
+	}
+
+	return tempDir, nil
+}
+
+func RenderTemplatesDir(srcDir, dstDir string, vars map[string]interface{}) error {
+	return filepath.Walk(srcDir, func(path string, info os.FileInfo, walkErr error) error {
+		if walkErr != nil {
+			return walkErr
+		}
+		if info.IsDir() {
+			return nil
+		}
+
+		relPath, err := filepath.Rel(srcDir, path)
+		if err != nil {
+			return err
+		}
+		destPath := filepath.Join(dstDir, relPath)
+
+		tmpl, err := template.ParseFiles(path)
+		if err != nil {
+			return fmt.Errorf("failed to parse template %s: %w", path, err)
+		}
+		outFile, err := os.Create(destPath)
+		if err != nil {
+			return fmt.Errorf("failed to create file %s: %w", destPath, err)
+		}
+		defer outFile.Close()
+
+		if err := tmpl.Execute(outFile, vars); err != nil {
+			return fmt.Errorf("failed to render template %s: %w", path, err)
+		}
+		return nil
+	})
 }
