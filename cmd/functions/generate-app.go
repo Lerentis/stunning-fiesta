@@ -18,10 +18,21 @@ var generateApp = &cobra.Command{
 	Short: "Generate an application JSON file",
 	Long:  `Generate an application JSON file based on the provided templates and configurations.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		_, err := config.LoadConfig(defaultConfig)
+		cfg, err := config.LoadConfig(defaultConfig)
 		if err != nil {
 			fmt.Printf("Error loading config: %v\n", err)
 			os.Exit(1)
+		}
+
+		clusterList, err := utils.ListAvailableClusters(*cfg)
+		if err != nil {
+			fmt.Printf("Error listing clusters: %v\n", err)
+			os.Exit(1)
+		}
+
+		var clusterNames []string
+		for _, c := range clusterList.Clusters {
+			clusterNames = append(clusterNames, c.Name)
 		}
 
 		var app utils.App
@@ -53,8 +64,11 @@ var generateApp = &cobra.Command{
 				Validate: survey.Required,
 			},
 			{
-				Name:     "Cluster",
-				Prompt:   &survey.Input{Message: "What is the cluster name?"},
+				Name: "Cluster",
+				Prompt: &survey.Select{
+					Message: "Select the cluster:",
+					Options: clusterNames,
+				},
 				Validate: survey.Required,
 			},
 			{
