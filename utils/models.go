@@ -1,5 +1,7 @@
 package utils
 
+import "encoding/xml"
+
 type App struct {
 	Name               string `json:"applicationName"`
 	Registry           string `json:"registry"`
@@ -16,6 +18,7 @@ type TemplatesListResponse struct {
 	ApplicationTemplates    []string `json:"application-templates"`
 	InfrastructureTemplates []string `json:"infrastructure-templates"`
 	NamespaceTemplates      []string `json:"namespace-templates"`
+	Dependencies            string   `json:"dependencies"`
 }
 
 type Stage struct {
@@ -102,4 +105,22 @@ type Vault struct {
 }
 type VaultList struct {
 	Vaults []Vault `json:"vaults"`
+}
+
+type Pom struct {
+	XMLName      xml.Name        `xml:"project"`
+	Xmlns        string          `xml:"xmlns,attr"`
+	XmlnsXsi     string          `xml:"xmlns:xsi,attr"`
+	XsiSchema    string          `xml:"xsi:schemaLocation,attr"`
+	ModelVersion string          `xml:"modelVersion"`
+	GroupID      string          `xml:"groupId"`
+	ArtifactID   string          `xml:"artifactId"`
+	Version      string          `xml:"version"`
+	Dependencies []PomDependency `xml:"dependencies>dependency"`
+}
+
+type PomDependency struct {
+	GroupID    string `xml:"groupId"`
+	ArtifactID string `xml:"artifactId"`
+	Version    string `xml:"version"`
 }

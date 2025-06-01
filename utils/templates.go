@@ -152,6 +152,41 @@ func GetInfrastructureTemplates(cfg config.Config) (string, error) {
 	return tempDir, nil
 }
 
+func GetDependencies(cfg config.Config) (map[string]interface{}, error) {
+	list, err := FetchTemplatesList(cfg.Endpoints.Template)
+	if err != nil {
+		return nil, err
+	}
+
+	tempDir, err := os.MkdirTemp("", "stunning-fiesta-dependencies-templates-*")
+	if err != nil {
+		return nil, fmt.Errorf("failed to create temp dir: %w", err)
+	}
+
+	baseURL := cfg.Endpoints.Template
+	if idx := len(baseURL) - len(filepath.Base(baseURL)); idx > 0 {
+		baseURL = baseURL[:idx]
+	}
+
+	url := baseURL + list.Dependencies
+	filePath, err := DownloadTemplate(url, tempDir)
+	if err != nil {
+		return nil, err
+	}
+
+	content, err := os.ReadFile(filePath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read dependencies.json: %w", err)
+	}
+
+	var result map[string]interface{}
+	if err := json.Unmarshal(content, &result); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal dependencies.json: %w", err)
+	}
+
+	return result, nil
+}
+
 func RenderTemplatesDir(srcDir, dstDir string, vars map[string]interface{}) error {
 	return filepath.Walk(srcDir, func(path string, info os.FileInfo, walkErr error) error {
 		if walkErr != nil {
