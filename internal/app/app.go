@@ -108,7 +108,6 @@ func createGradleBuild(repoPath string, dependencies map[string]interface{}) err
 }
 
 func createPom(repoPath string, serviceName string, dependencies map[string]interface{}) error {
-	// Prepare dependencies
 	var deps []utils.PomDependency
 	if depList, ok := dependencies["dependencies"].([]interface{}); ok {
 		for _, dep := range depList {
@@ -117,6 +116,43 @@ func createPom(repoPath string, serviceName string, dependencies map[string]inte
 					GroupID:    toString(depMap["groupId"]),
 					ArtifactID: toString(depMap["artifactId"]),
 					Version:    toString(depMap["version"]),
+				})
+			}
+		}
+	}
+
+	var plugins []utils.PomPlugin
+	if pluginList, ok := dependencies["plugins"].([]interface{}); ok {
+		for _, plugin := range pluginList {
+			if pluginMap, ok := plugin.(map[string]interface{}); ok {
+				var executions []utils.PomPluginExecution
+				if execList, ok := pluginMap["executions"].([]interface{}); ok {
+					for _, exec := range execList {
+						if execMap, ok := exec.(map[string]interface{}); ok {
+							var goals []string
+							if goalsList, ok := execMap["goals"].([]interface{}); ok {
+								for _, g := range goalsList {
+									goals = append(goals, toString(g))
+								}
+							}
+							executions = append(executions, utils.PomPluginExecution{
+								Phase: toString(execMap["phase"]),
+								Goals: goals,
+							})
+						}
+					}
+				}
+				plugins = append(plugins, utils.PomPlugin{
+					GroupID:    toString(pluginMap["groupId"]),
+					ArtifactID: toString(pluginMap["artifactId"]),
+					Version:    toString(pluginMap["version"]),
+					Executions: executions,
+					Configuration: func() *utils.PomPluginConfiguration {
+						if cfg, ok := pluginMap["configuration"].(*utils.PomPluginConfiguration); ok {
+							return cfg
+						}
+						return nil
+					}(),
 				})
 			}
 		}
@@ -131,6 +167,7 @@ func createPom(repoPath string, serviceName string, dependencies map[string]inte
 		ArtifactID:   serviceName,
 		Version:      "1.0.0",
 		Dependencies: deps,
+		Plugins:      plugins,
 	}
 
 	pomPath := filepath.Join(repoPath, "pom.xml")

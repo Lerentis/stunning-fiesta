@@ -117,6 +117,8 @@ type Pom struct {
 	ArtifactID   string          `xml:"artifactId"`
 	Version      string          `xml:"version"`
 	Dependencies []PomDependency `xml:"dependencies>dependency"`
+	Build        *PomBuild       `xml:"build,omitempty"`
+	Plugins      []PomPlugin     `xml:"-"`
 }
 
 type PomDependency struct {
@@ -124,3 +126,22 @@ type PomDependency struct {
 	ArtifactID string `xml:"artifactId"`
 	Version    string `xml:"version"`
 }
+
+type PomBuild struct {
+	Plugins []PomPlugin `xml:"plugins>plugin"`
+}
+
+type PomPlugin struct {
+	GroupID       string                  `xml:"groupId"`
+	ArtifactID    string                  `xml:"artifactId"`
+	Version       string                  `xml:"version"`
+	Executions    []PomPluginExecution    `xml:"executions>execution,omitempty"`
+	Configuration *PomPluginConfiguration `xml:"configuration,omitempty"`
+}
+
+type PomPluginExecution struct {
+	Phase string   `xml:"phase"`
+	Goals []string `xml:"goals>goal"`
+}
+
+type PomPluginConfiguration map[string]interface{}
