@@ -10,7 +10,6 @@
       "properties.yaml"
     ],
     "application-templates": [
-      "dependencies.json",
       "properties.json",
       ".gitlab-ci.yml",
       "banner.txt",
@@ -24,9 +23,11 @@
         "backend.tf",
         "catalog-info.yaml",
         "data.tf",
+        "values.yaml",
         "variables.tf"
     ],
     "namespace-templates": [
         "values.yaml"
-    ]
+    ],
+    "dependencies": "dependencies.json"
   }
