@@ -95,7 +95,8 @@ func CreateGroup(cfg config.Config, groupName string) error {
 		return err
 	}
 	if exists {
-		return fmt.Errorf("group '%s' already exists", groupName)
+		fmt.Printf("group '%s' already exists", groupName)
+		return nil
 	}
 	return createGroupAPI(cfg, groupName, groupName)
 }
@@ -182,13 +183,14 @@ func projectExists(cfg config.Config, fullPath string, serviceName string) (stri
 	var projects []struct {
 		PathWithNamespace string `json:"path_with_namespace"`
 		HTTPURLToRepo     string `json:"http_url_to_repo"`
+		SSHURLToRepo      string `json:"ssh_url_to_repo"`
 	}
 	if err := json.NewDecoder(resp.Body).Decode(&projects); err != nil {
 		return "", fmt.Errorf("failed to decode project search response: %w", err)
 	}
 	for _, project := range projects {
 		if project.PathWithNamespace == fullPath {
-			return project.HTTPURLToRepo, nil
+			return project.SSHURLToRepo, nil
 		}
 	}
 	return "", nil
@@ -211,11 +213,12 @@ func createProject(cfg config.Config, namespaceID int, serviceName string) (stri
 	}
 	var createdProject struct {
 		HTTPURLToRepo string `json:"http_url_to_repo"`
+		SSHURLToRepo  string `json:"ssh_url_to_repo"`
 	}
 	if err := json.NewDecoder(createResp.Body).Decode(&createdProject); err != nil {
 		return "", fmt.Errorf("failed to decode project creation response: %w", err)
 	}
-	return createdProject.HTTPURLToRepo, nil
+	return createdProject.SSHURLToRepo, nil
 }
 
 func CreateKubernetesRepo(cfg config.Config, groupName string, serviceName string) (string, error) {
@@ -236,7 +239,8 @@ func CreateKubernetesRepo(cfg config.Config, groupName string, serviceName strin
 	if url, err := projectExists(cfg, projectPath, serviceName); err != nil {
 		return "", err
 	} else if url != "" {
-		return url, fmt.Errorf("repository '%s' already exists", projectPath)
+		fmt.Printf("repository '%s' already exists", projectPath)
+		return url, nil
 	}
 
 	// 4. Create project
@@ -253,7 +257,8 @@ func CreateServiceRepo(cfg config.Config, groupName string, serviceName string) 
 	if url, err := projectExists(cfg, projectPath, serviceName); err != nil {
 		return "", err
 	} else if url != "" {
-		return url, fmt.Errorf("repository '%s' already exists", projectPath)
+		fmt.Printf("repository '%s' already exists", projectPath)
+		return url, nil
 	}
 	return createProject(cfg, topicGroupID, serviceName)
 }

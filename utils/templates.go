@@ -179,6 +179,8 @@ func GetDependencies(cfg config.Config) (map[string]interface{}, error) {
 		return nil, fmt.Errorf("failed to read dependencies.json: %w", err)
 	}
 
+	fmt.Println("Read dependencies.json from:", filePath)
+
 	var result map[string]interface{}
 	if err := json.Unmarshal(content, &result); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal dependencies.json: %w", err)
