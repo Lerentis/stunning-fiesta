@@ -52,7 +52,7 @@ func EnsureConfig(configPath string) error {
 				Projects:         "https://lerentis.github.io/stunning-fiesta/projects.json",
 				Vault:            "https://lerentis.github.io/stunning-fiesta/vault.json",
 				Teams:            "https://lerentis.github.io/stunning-fiesta/teams.json",
-				ApplicationTypes: "https://lerentis.github.io/stunning-fiesta/applicationTypes.json",
+				ApplicationTypes: "https://lerentis.github.io/stunning-fiesta/application_types.json",
 			},
 			GitlabURL:      "https://gitlab.com/lerentis/stunning-fiesta",
 			NamespacesRepo: "devops/namespaces",
