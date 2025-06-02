@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/lerentis/stunning-fiesta/internal/config"
 )
@@ -292,4 +293,35 @@ func CreateNamespaceRepo(cfg config.Config, serviceName string) (string, error) 
 		return url, fmt.Errorf("repository '%s' already exists", projectPath)
 	}
 	return createProject(cfg, topicGroupID, serviceName)
+}
+
+func repoPathFromURL(url string) string {
+	if strings.HasPrefix(url, "git@") {
+		parts := strings.SplitN(url, ":", 2)
+		if len(parts) == 2 {
+			url = parts[1]
+		}
+	}
+	url = strings.TrimSuffix(url, ".git")
+	return url
+}
+
+func AddWebhookToRepo(cfg config.Config, cloneURL string, webhookURL string) error {
+	payload := map[string]interface{}{
+		"url":                   webhookURL,
+		"push_events":           true,
+		"merge_requests_events": true,
+	}
+	repoPath := repoPathFromURL(cloneURL)
+	apiPath := fmt.Sprintf("projects/%s/hooks", repoPath)
+	resp, err := doGitlabAPIRequest(cfg, "POST", apiPath, payload)
+	if err != nil {
+		return fmt.Errorf("failed to send request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusCreated {
+		return fmt.Errorf("failed to add webhook: status %s", resp.Status)
+	}
+	return nil
 }
